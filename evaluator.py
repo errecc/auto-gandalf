@@ -6,4 +6,6 @@ import torch
 
 class AutoGandalfDatabaseLoader:
     def __init__(self):
-        raise NotImplementedError
+        self.X = None
+        self.Y = None
+
