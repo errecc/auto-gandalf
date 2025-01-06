@@ -1,5 +1,5 @@
-ollama_model: "llama3.2"
-global_delay: 3 # delay between requests in seconds
-mongodb_host: "localhost"
+ollama_model: "llama3.2" 
+global_delay: 3 
+mongodb_host: "localhost" 
 mongodb_port: "27017"
 db_name: "gandalf_db"
