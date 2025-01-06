@@ -17,11 +17,12 @@ class ConfigLoader:
         self.mongo_host = self.config["mongodb_host"]
         self.mongo_port = self.config["mongodb_port"]
         self.db_name = self.config["db_name"]
+        self.ollama_model = self.config["ollama_model"]
 
     def show(self):
+        """Print the configuration loaded"""
         print("Config loaded:")
         pprint(self.config)
-        print("\n"*2)
 
 
 class DefenderGrabber:
@@ -38,14 +39,19 @@ class DefenderGrabber:
 
 class PasswordGrabber:
     def __init__(self, answer):
-        raise NotImplementedError
+        self.answer = answer
 
     def grab_password(self):
+        """
+        Process an answer from Gandalf and grab the password if it is in the
+        answer, else, return False
+        """
         raise NotImplementedError
 
 
 class AdversarialPayloadGenerator:
     def __init__(self, model):
+        self.model = model
         raise NotImplementedError
 
     def generate_payload(self, model):
@@ -55,5 +61,3 @@ class AdversarialPayloadGenerator:
 class GandalfAdversary:
     def __init__(self, defender):
         raise NotImplementedError
-
-
