@@ -132,7 +132,3 @@ class GandalfAdversary:
         it in MongoDB Database.
         """
         raise NotImplementedError
-
-
-test = DefenderGrabber()
-test.grab_defenders()
