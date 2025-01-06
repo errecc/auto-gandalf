@@ -19,9 +19,6 @@
 ⠀⠀⠀⠀⠀⠀⠀⠈⠐⢄⠠⡞⠠⢄⠀⠈⠢⣀⠑⢄⠀⠀⠀⣸⠀⠀⠀⠀⠮⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠒⠁⠀⠀⠈⠐⠂⠤⠹⠆⠙⠒⢠⠃⠀⠀⠀⠀⠀⠉⠑⠂⢄⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠘⠶⠲⠶⠶⠦⠴⠶⠶⠖⠶⠓⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-
-
 
 # About this project
 This project tries to automate [Gandalf](https://gandalf.lakera.ai/) by implementing an adversarial network and attempting to perform prompt injection.
