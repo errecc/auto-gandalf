@@ -1,0 +1,4 @@
+global_delay: 3 # delay between requests in seconds
+mongodb_host: "localhost"
+mongodb_port: "27017"
+db_name: "gandalf_db"
