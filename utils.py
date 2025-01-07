@@ -1,6 +1,7 @@
 from pprint import pprint
 from pymongo import MongoClient
 from string import Template
+from time import sleep
 import datetime
 import json
 import ollama
@@ -58,8 +59,7 @@ class DefenderGrabber:
 
     def grab_defenders(self):
         """
-        Attemps to query a question to gandalf with an uninvalid defender to
-        retrieve all possible defenders and store them in a database
+        Attemps to query a question to gandalf with an uninvalid defender to retrieve all possible defenders and store them in a database
         """
         self.session.get("https://gandalf.lakera.ai")
         file = {
@@ -79,7 +79,6 @@ class DefenderGrabber:
                 "defenders": defenders,
                 "datetime": now
                 }
-        pprint(data)
         # push data to database
         dbhandler = DatabaseHandler("defenders")
         dbhandler.insert(data)
@@ -87,9 +86,12 @@ class DefenderGrabber:
 
         
 class AdversarialPayloadGenerator:
-    def __init__(self, model):
-        self.model = model
-        raise NotImplementedError
+    def __init__(self, model = None):
+        if(self.model is None):
+            config = ConfigLoader()
+            self.model = config.ollama_model
+        else:
+            self.model = model
 
     def generate_payload(self, model):
         """Generate the payload that is going to be sended to Gandalf"""
@@ -132,3 +134,10 @@ class GandalfAdversary:
         it in MongoDB Database.
         """
         raise NotImplementedError
+
+
+
+for i in range(100):
+    defender = DefenderGrabber()
+    defender.grab_defenders()
+    sleep(4)
