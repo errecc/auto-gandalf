@@ -2,4 +2,4 @@ ollama_model: "llama3.2"
 global_delay: 3 
 mongodb_host: "localhost" 
 mongodb_port: "27017"
-db_name: "gandalf_db"
+db_name: "gandalf"
