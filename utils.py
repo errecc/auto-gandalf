@@ -131,16 +131,8 @@ class GandalfAdversary:
         else:
             self.model = model
 
-    def send_payload(self):
+    def send_payloads(self):
         """Send the payload to Gandalf and return the response"""
-        raise NotImplementedError
-
-    def store_in_db(self):
-        """
-        Store the payload sent to Gandalf, the answer given by Gandalf, and
-        if the payload was sucessful or not. Also adds metadata to it and store
-        it in MongoDB Database.
-        """
         raise NotImplementedError
 
     def collect_info(self):
@@ -150,4 +142,3 @@ class GandalfAdversary:
         iterating over all different defenders.
         """
         raise NotImplementedError
-
