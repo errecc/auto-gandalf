@@ -135,14 +135,6 @@ class GandalfAdversary:
         """Send the payload to Gandalf and return the response"""
         raise NotImplementedError
 
-    def evaluate_payload(self):
-        """
-        Attemps to submit the password to Gandalf to check if the password
-        given by Gandalf is correct, return true if it's valid and false if
-        it's not
-        """
-        raise NotImplementedError
-
     def store_in_db(self):
         """
         Store the payload sent to Gandalf, the answer given by Gandalf, and
@@ -151,14 +143,11 @@ class GandalfAdversary:
         """
         raise NotImplementedError
 
-
-class PasswordGrabber:
-    def __init__(self, answer):
-        self.answer = answer
-
-    def grab_password(self):
+    def collect_info(self):
         """
-        Process an answer from Gandalf and grab the password if it is in the
-        answer, else, return False
+        Iterates sending payloads and collecting info until all the
+        different prompts are evaluated at least a good amount of time
+        iterating over all different defenders.
         """
         raise NotImplementedError
+
