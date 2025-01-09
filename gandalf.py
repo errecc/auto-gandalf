@@ -147,26 +147,31 @@ class GandalfAdversary:
         # send iterate over prompts and defenders
         for p in prompts:
             for d in defenders:
-                payload_generator = AdversarialPayloadGenerator()
-                payload = payload_generator.generate_payload(p, d["description"])
-                file = {
-                        "defender": d["name"],
-                        "prompt": payload
-                        }
-                ans = self.session.post("https://gandalf.lakera.ai/api/send-message", file)
-                answer = json.loads(ans.content)["answer"]
-                data = {
-                        "payload": payload,
-                        "answer": answer,
-                        "defender_name": d["name"],
-                        "defender_instructions": d["description"],
-                        "adversary_prompt": p,
-                        "model": self.model
-                        }
-                dbhandler = DatabaseHandler("auto_gandalf")
-                dbhandler.insert(data)
-                pprint(data)
-                sleep(self.config.global_delay)
+                try:
+                    payload_generator = AdversarialPayloadGenerator()
+                    payload = payload_generator.generate_payload(p, d["description"])
+                    file = {
+                            "defender": d["name"],
+                            "prompt": payload
+                            }
+                    ans = self.session.post("https://gandalf.lakera.ai/api/send-message", file)
+                    answer = json.loads(ans.content)["answer"]
+                    data = {
+                            "payload": payload,
+                            "answer": answer,
+                            "defender_name": d["name"],
+                            "defender_instructions": d["description"],
+                            "adversary_prompt": p,
+                            "model": self.model
+                            }
+                    dbhandler = DatabaseHandler("auto_gandalf")
+                    dbhandler.insert(data)
+                    pprint(data)
+                    sleep(self.config.global_delay)
+                except Exception as e:
+                    errors_db = DatabaseHandler("errors")
+                    error = {"error": str(e)}
+                    errors_db.insert(error)
 
     def collect_info(self, amount):
         """
