@@ -1,4 +1,5 @@
 from pprint import pprint
+from tqdm import tqdm
 from pymongo import MongoClient
 from string import Template
 from time import sleep
@@ -72,7 +73,15 @@ class DefenderGrabber:
         error = answer["error"]
         pattern = r"\[(.*?)\]"
         match = re.findall(pattern, error)[0].split(",")
-        defenders = [m.strip(" '") for m in match]
+        defender_names = [m.strip(" '") for m in match]
+        defenders = []
+        print(f"grabbing defenders:")
+        for d in tqdm(defender_names):
+            ans = self.session.get(f"https://gandalf.lakera.ai/api/defender?defender={d}")
+            answer = json.loads(ans.content)
+            defenders.append(answer)
+            config = ConfigLoader()
+            sleep(config.global_delay)
         cookies = self.session.cookies.items()
         data = {
                 "cookies": cookies,
@@ -137,7 +146,6 @@ class GandalfAdversary:
 
 
 
-for i in range(100):
-    defender = DefenderGrabber()
-    defender.grab_defenders()
-    sleep(4)
+defender = DefenderGrabber()
+defs = defender.grab_defenders()
+pprint(defs)
