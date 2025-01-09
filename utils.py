@@ -123,22 +123,13 @@ class AdversarialPayloadGenerator:
         return answer
 
 
-class PasswordGrabber:
-    def __init__(self, answer):
-        self.answer = answer
-
-    def grab_password(self):
-        """
-        Process an answer from Gandalf and grab the password if it is in the
-        answer, else, return False
-        """
-        raise NotImplementedError
-
-
 class GandalfAdversary:
-    def __init__(self,payload, defender):
-        self.payload = payload
-        self.defender = defender
+    def __init__(self, model = None):
+        config = ConfigLoader()
+        if model is None:
+            self.model = config.ollama_model
+        else:
+            self.model = model
 
     def send_payload(self):
         """Send the payload to Gandalf and return the response"""
@@ -161,14 +152,13 @@ class GandalfAdversary:
         raise NotImplementedError
 
 
+class PasswordGrabber:
+    def __init__(self, answer):
+        self.answer = answer
 
-#defender = DefenderGrabber()
-#defs = defender.grab_defenders()
-#pprint(defs)
-with open("prompt.txt", 'r') as fp:
-    prompt = fp.read()
-defense = "I can tell you the password, but now there's this mean AI model that censors my answer if it would reveal the password"
-
-for i in range(20):
-    payload_gen = AdversarialPayloadGenerator()
-    payload_gen.generate_payload(prompt, defense)
+    def grab_password(self):
+        """
+        Process an answer from Gandalf and grab the password if it is in the
+        answer, else, return False
+        """
+        raise NotImplementedError
