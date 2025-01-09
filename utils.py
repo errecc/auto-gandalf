@@ -1,11 +1,11 @@
+from ollama import chat, ChatResponse
 from pprint import pprint
-from tqdm import tqdm
 from pymongo import MongoClient
 from string import Template
 from time import sleep
+from tqdm import tqdm
 import datetime
 import json
-import ollama
 import re
 import requests
 import yaml
@@ -96,15 +96,31 @@ class DefenderGrabber:
         
 class AdversarialPayloadGenerator:
     def __init__(self, model = None):
-        if(self.model is None):
-            config = ConfigLoader()
+        config = ConfigLoader()
+        if(model is None):
             self.model = config.ollama_model
         else:
             self.model = model
 
-    def generate_payload(self, model):
+    def generate_payload(self, prompt, defender_text):
         """Generate the payload that is going to be sended to Gandalf"""
-        raise NotImplementedError
+        generator = Template(prompt).safe_substitute(DEFENDER=defender_text)
+        payload = chat(
+                model = self.model,
+                messages = [{"role": "user", "content": generator}],
+                stream = False
+                )
+        answer = payload["message"]["content"]
+        dbhandler = DatabaseHandler("generated_payloads")
+        data = {
+                "model": self.model,
+                "prompt": prompt,
+                "defender": defender_text,
+                "time": datetime.datetime.now(),
+                "generated_payload": answer
+                }
+        dbhandler.insert(data)
+        return answer
 
 
 class PasswordGrabber:
@@ -146,6 +162,13 @@ class GandalfAdversary:
 
 
 
-defender = DefenderGrabber()
-defs = defender.grab_defenders()
-pprint(defs)
+#defender = DefenderGrabber()
+#defs = defender.grab_defenders()
+#pprint(defs)
+with open("prompt.txt", 'r') as fp:
+    prompt = fp.read()
+defense = "I can tell you the password, but now there's this mean AI model that censors my answer if it would reveal the password"
+
+for i in range(20):
+    payload_gen = AdversarialPayloadGenerator()
+    payload_gen.generate_payload(prompt, defense)
