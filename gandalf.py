@@ -126,19 +126,58 @@ class AdversarialPayloadGenerator:
 class GandalfAdversary:
     def __init__(self, model = None):
         config = ConfigLoader()
+        self.config = config
         if model is None:
             self.model = config.ollama_model
         else:
             self.model = model
+        self.session = requests.Session()
 
     def send_payloads(self):
         """Send the payload to Gandalf and return the response"""
-        raise NotImplementedError
+        # Load defenders
+        df_loader = DatabaseHandler("defenders")
+        def_list = df_loader.get_list()
+        defenders_list = def_list[-1]["defenders"]
+        defenders = [{"name":d["name"], "description":d["description"]} for d in defenders_list]
+        # Load prompts
+        pr_loader = DatabaseHandler("prompts")
+        prompts_list = pr_loader.get_list()
+        prompts = [p["prompt"] for p in prompts_list]
+        # send iterate over prompts and defenders
+        for p in prompts:
+            for d in defenders:
+                payload_generator = AdversarialPayloadGenerator()
+                payload = payload_generator.generate_payload(p, d["description"])
+                file = {
+                        "defender": d["name"],
+                        "prompt": payload
+                        }
+                ans = self.session.post("https://gandalf.lakera.ai/api/send-message", file)
+                answer = json.loads(ans.content)["answer"]
+                data = {
+                        "payload": payload,
+                        "answer": answer,
+                        "defender_name": d["name"],
+                        "defender_instructions": d["description"],
+                        "adversary_prompt": p,
+                        "model": self.model
+                        }
+                dbhandler = DatabaseHandler("auto_gandalf")
+                dbhandler.insert(data)
+                pprint(data)
+                sleep(self.config.global_delay)
 
-    def collect_info(self):
+    def collect_info(self, amount):
         """
         Iterates sending payloads and collecting info until all the
         different prompts are evaluated at least a good amount of time
         iterating over all different defenders.
         """
-        raise NotImplementedError
+        for n in tqdm(range(amount)):
+            self.send_payloads()
+
+
+if __name__ == "__main__":
+    adversary = GandalfAdversary()
+    adversary.collect_info(10)
